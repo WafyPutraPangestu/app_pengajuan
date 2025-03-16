@@ -1,3 +1,4 @@
+@props(['heading' => '$heading'])
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
@@ -15,6 +16,10 @@
     @unless(request()->routeIs('auth.login') || request()->routeIs('auth.register'))
         <x-navigation/>
     @endunless
+
+    <div class="container mx-auto">
+        <h1 class="text-2xl font-bold">{{ $heading }}</h1>
+    </div>
 
     <main class="container mx-auto py-4">
         {{ $slot }}

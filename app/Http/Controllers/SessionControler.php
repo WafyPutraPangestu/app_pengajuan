@@ -21,6 +21,7 @@ class SessionControler extends Controller
      */
     public function login(request $request)
     {
+        // dd(Auth::user());
         // dd($request->all());
         $credentials = $request->validate([
             'email' => ['required', 'email'],
@@ -31,14 +32,18 @@ class SessionControler extends Controller
             $request->session()->regenerate();
         }
 
-        if (Auth::user()->role === 'admin') {
+        if (Auth::attempt() === 'admin') {
             return redirect()->intended('/admin/input');
         }
-        return redirect()->intended('/');
+        return redirect()->back()->withInput(
+            $request->only('email')
+        )->withErrors([
+            'password' => 'PASSWORD SALAH HARAP MASUKAN DATA YANG BENAR.',
+        ]);
 
-        return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
-        ])->onlyInput('email');      
+        // return back()->withErrors([
+        //     'email' => 'The provided credentials do not match our records.',
+        // ])->onlyInput('email');      
     }
   
   
@@ -57,7 +62,7 @@ class SessionControler extends Controller
         // dd($request->all());
         $credentials = $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'no_telp' => ['required', 'numeric'],
+            'no_telp' => ['required', 'numeric', 'unique:users'],	
             'email' => ['required', 'email', 'unique:users'],
             'password' => ['required', 'min:8', 'confirmed'],
         ]);

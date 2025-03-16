@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\SessionControler;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'home')->name('home');
@@ -12,8 +13,21 @@ Route::middleware('admin')->group(function () {
         Route::get('input', 'input')->name('input');
         Route::post('input', 'store')->name('store');
         Route::get('data', 'show')->name('data');
+        Route::get('pengajuan', 'viewPengajuan')->name('pengajuan');
+        Route::put('{pengajuan}/status', 'pengajuan')->name('status');
     });
      
+});
+
+Route::middleware('user')->group(function () {
+    Route::controller(UserController::class)->prefix('user')->name('user.')->group(function () {
+        Route::get('pengajuan', 'viewPengajuan')->name('pengajuan');
+        Route::post('pengajuan', 'pengajuan')->name('pengajuan');
+        Route::get('riwayat', 'show')->name('riwayat');
+        Route::get('tiket', 'ViewTiket')->name('tiket');
+        Route::get('{pengajuan}/showtiket', 'ShowTiket')->name('showtiket');
+        Route::get('riwayat', 'ShowRiwayat')->name('riwayat');
+    });
 });
 
 

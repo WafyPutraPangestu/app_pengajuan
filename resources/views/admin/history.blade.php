@@ -1,3 +1,3 @@
-<div>
-    <!-- Simplicity is the consequence of refined emotions. - Jean D'Alembert -->
-</div>
+<x-layout heading="HISTORY DATA">
+
+</x-layout>

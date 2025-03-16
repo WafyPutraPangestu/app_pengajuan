@@ -11,15 +11,15 @@
           @can('admin')
           <x-nav-link href="{{ route('admin.input') }}" :active="request()->is('admin/input')">input Item</x-nav-link>
           <x-nav-link href="{{ route('admin.data') }}" :active="request()->is('admin/data')">Data Items</x-nav-link>
-          <x-nav-link href="#">Daftar Pengajuan</x-nav-link>
+          <x-nav-link href="{{ route('admin.pengajuan') }}" :active="request()->is('admin/pengajuan')">Daftar Pengajuan</x-nav-link>
           <x-nav-link href="#">History</x-nav-link>
           @endcan
             {{-- admin fitur --}}
             {{-- user fitur --}}
             @can('user')
-            <x-nav-link href="#">Pengajuan Perbaikan</x-nav-link>
-            <x-nav-link href="#">Ticket</x-nav-link>
-            <x-nav-link href="#">Riwayat Perbaikan</x-nav-link>
+            <x-nav-link href="{{ route('user.pengajuan') }}" :active="request()->is('user/pengajuan')">Pengajuan Perbaikan</x-nav-link>
+            <x-nav-link href="{{ route('user.tiket') }}" :active="request()->is('user/tiket')">Ticket</x-nav-link>
+            <x-nav-link href="{{ route('user.riwayat') }}" :active="request()->is('user/riwayat')">Riwayat Perbaikan</x-nav-link>
             @endcan
         </div>
         <div class="flex justify-between gap-4"> 

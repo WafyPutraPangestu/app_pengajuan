@@ -11,12 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pengajuans', function (Blueprint $table) {
+        Schema::create('pengajuan', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
-            $table->foreignId('item_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
-            $table->integer('jumlah');
-            $table->enum('status', ['pending', 'proses', 'done'])->default('pending');
+            $table->foreignId('item_id')->constrained('items')->cascadeOnUpdate()->cascadeOnDelete();
+            $table->text('deskripsi');
+            $table->string('kode_pengajuan')->unique();
+            $table->enum('status', ['pending', 'proses', 'selesai'])->default('pending');
             $table->timestamps();
         });
     }
@@ -26,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pengajuans');
+        Schema::dropIfExists('pengajuan');
     }
 };
