@@ -1,6 +1,4 @@
-<x-layout>
-   
-  
+<x-layout heading="Login" class="bg-gray-100">
     <h1 class="text-2xl font-extrabold text-center py-4">WELCOME TO LOGIN PAGE</h1>
     <x-form method="POST" action="{{ route('auth.login') }}">
       

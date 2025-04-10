@@ -16,15 +16,15 @@ class ChekUser
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if(Auth::check() && Auth::user()->role === 'user') {
-            return $next($request);
-        }
-
-        if (Auth::user()->role !== 'user') {
+        if (Auth::check()) {
+            if (Auth::user()->role === 'user') {
+                return $next($request);
+            }
+            
             abort(403, 'You are not authorized to access this page');
         }
         
         
-        return redirect()->route('auth.login')->with('error', 'You are not authorized to access this page');
+        return redirect()->route('auth.register')->with('error', 'You are not authorized to access this page');
     }
 }

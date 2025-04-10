@@ -12,16 +12,15 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="font-sans antialiased bg-neutral-950 text-white">
-    
     @unless(request()->routeIs('auth.login') || request()->routeIs('auth.register'))
         <x-navigation/>
     @endunless
 
-    <div class="container mx-auto">
-        <h1 class="text-2xl font-bold">{{ $heading }}</h1>
+    <div class="container mx-auto mt-10 mb-5 px-20">
+        <h1 class="text-2xl font-bold ">{{ $heading }}</h1>
     </div>
 
-    <main class="container mx-auto py-4">
+    <main class="container mx-auto py-4 px-20">
         {{ $slot }}
     </main>
 </body>

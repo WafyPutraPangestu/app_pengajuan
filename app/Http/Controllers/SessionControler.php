@@ -68,11 +68,10 @@ class SessionControler extends Controller
         ]);
 
         $user = User::create($credentials);
-
-        Auth::login($user);
-
         $request->session()->regenerate();
-
+        $user->password = bcrypt($request->password);
+        $user->save();
+        // dd($user);
         return redirect()->route('auth.login');
     }
 
@@ -84,7 +83,7 @@ class SessionControler extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect('/auth/login')->with('success', 'Berhasil Logout');
     }
 
  

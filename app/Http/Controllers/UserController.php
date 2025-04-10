@@ -40,7 +40,7 @@ class UserController extends Controller
     public function ViewTiket()
     {
         $user = Auth::user();
-        $pengajuan = pengajuan::where('user_id',$user->id)->latest()->simplePaginate(2);
+        $pengajuan = pengajuan::where('user_id',$user->id)->where('status' , '!=', 'selesai')->latest()->simplePaginate(2);
         
 
         return view('user.tiket', compact('user','pengajuan'));

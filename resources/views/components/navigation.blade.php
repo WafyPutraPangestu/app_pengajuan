@@ -1,48 +1,38 @@
-  <div class="px-10">
-    <nav class="flex justify-between items-center  py-4 border-b border-white/10"> 
-        <div>
-            <a href="">
-                {{-- <img src="{{ vite::asset('resources/img/logo.svg') }}" alt=""> --}}
-                <h1>logo</h1>
-            </a>
-        </div>
-        <div class="space-x-6 font-bold pl-30">
+<nav class="flex justify-between items-center border-b border-white/10 px-10 py-2">
+  <div>
+      <a href="/">
+          <h1>logo</h1>
+      </a>
+  </div>
+  <div class="flex items-center gap-8">
+      <div class="space-x-6 font-bold">
           <x-nav-link href="/" :active="request()->is('/')">Home</x-nav-link>
           @can('admin')
-          <x-nav-link href="{{ route('admin.input') }}" :active="request()->is('admin/input')">input Item</x-nav-link>
-          <x-nav-link href="{{ route('admin.data') }}" :active="request()->is('admin/data')">Data Items</x-nav-link>
-          <x-nav-link href="{{ route('admin.pengajuan') }}" :active="request()->is('admin/pengajuan')">Daftar Pengajuan</x-nav-link>
-          <x-nav-link href="#">History</x-nav-link>
+          <x-nav-link href="{{ route('admin.dashboard')}}"  :active="request()->is('admin/dashboard')">Dashboard</x-nav-link>
+          <x-nav-link href="{{ route('admin.pengajuan') }}"  :active="request()->is('admin/pengajuan')">Daftar Pengajuan</x-nav-link>
+          <x-nav-link href="{{ route('admin.input') }}" :active="request()->is('admin/input')">Input Item</x-nav-link>
+          <x-nav-link href="{{ route('admin.data') }}"  :active="request()->is('admin/data')">Data Items</x-nav-link>
+          <x-nav-link href="{{ route('admin.history') }}"  :active="request()->is('admin/history')">History</x-nav-link>
           @endcan
-            {{-- admin fitur --}}
-            {{-- user fitur --}}
-            @can('user')
-            <x-nav-link href="{{ route('user.pengajuan') }}" :active="request()->is('user/pengajuan')">Pengajuan Perbaikan</x-nav-link>
-            <x-nav-link href="{{ route('user.tiket') }}" :active="request()->is('user/tiket')">Ticket</x-nav-link>
-            <x-nav-link href="{{ route('user.riwayat') }}" :active="request()->is('user/riwayat')">Riwayat Perbaikan</x-nav-link>
-            @endcan
-        </div>
-        <div class="flex justify-between gap-4"> 
-           {{-- <x-button-primary>
-            <a href="">Post a Job</a>
-          </x-button-primary> --}}
+          @can('user')
+          <x-nav-link href="{{ route('user.pengajuan') }}" :active="request()->is('user/pengajuan')">Pengajuan</x-nav-link>
+          <x-nav-link href="{{ route('user.tiket') }}" :active="request()->is('user/tiket')">Ticket</x-nav-link>
+          <x-nav-link href="{{ route('user.riwayat') }}" :active="request()->is('user/riwayat')">History</x-nav-link>
+          @endcan
+      </div>
+      <div class="flex items-center gap-4">
           @auth
           <form method="POST" action="{{ route('auth.logout') }}">
-            @csrf
-            <x-button-outline class="cursor-pointer" type="submit">Logout</x-button-outline>
+              @csrf
+              <button class="inline-flex items-center px-1   text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out cursor-pointer">
+                  Logout
+              </button>
           </form>
           @endauth
-        </div>
-        @guest
-        <div class="space-x-6 font-bold">
+          @guest
           <x-button-outline href="{{ route('auth.register') }}">Mendaftar</x-button-outline>
           <x-button-outline href="{{ route('auth.login') }}">Login</x-button-outline>
+          @endguest
       </div>
-        @endguest
-    </nav>
-
-    <main class="mt-10 max-w-[986px] mx-auto">
-      {{ $slot }}
-    </main>
-
   </div>
+</nav>

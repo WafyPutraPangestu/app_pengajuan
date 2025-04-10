@@ -2,7 +2,7 @@
 
     <div class="flex justify-between items-center">
         <h1 class="text-2xl font-bold">Daftar Pengajuan</h1>
-        <a href="{{ route('admin.input') }}" class="px-4 py-2 bg-blue-500 text-white rounded-lg">Tambah Pengajuan</a>
+        
     </div>
     <div class="mt-8">
         <table class="w-full border-collapse border border-white/10">
@@ -17,10 +17,16 @@
                 </tr>
             </thead>
             <tbody>
+                @if($pengajuan->isEmpty())
+                    <tr>
+                        <td colspan="6" class="border border-white/10 px-4 py-2 text-center text-white">Tidak ada data pengajuan</td>
+                    </tr>
+                @endif
                 @foreach ($pengajuan as $item)
                     <tr>
-                        <td class="border border-white/10 px-4 py-2">{{ $loop->iteration }}</td>
-                        <td class="border border-white/10 px-4 py-2">{{ $item->name }}</td>
+                        <td class="border border-white/10 px-4 py-2 text-white">{{ $loop->iteration }}</td>
+                        <td class="border border-white/10 px-4 py-2 text-white">{{ $item->item->name  }}</td>
+                        {{-- @dd($item->item->name); --}}
                         <td class="border border-white/10 px-4 py-2">
                             <img src="{{ asset('storage/items/' . $item->item->image) }}" alt="{{ $item->name }}" class="w-20 h-20 object-cover">
                         </td>

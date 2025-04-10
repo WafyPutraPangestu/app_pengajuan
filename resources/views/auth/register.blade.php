@@ -1,4 +1,4 @@
-<x-layout>
+<x-layout heading="Pendaftaran Akun" class="bg-gray-100">
     <h1 class="text-2xl font-extrabold text-center py-4"> PENDAFTARAN AKUN</h1>
     <x-form method="POST" action="{{ route('auth.register') }}">
         <x-input name="name" value="{{ old('name') }}" label="Nama Lengkap" />

@@ -10,11 +10,13 @@ Route::view('/', 'home')->name('home');
 
 Route::middleware('admin')->group(function () {
     Route::controller(AdminController::class)->prefix('admin')->name('admin.')->group(function () {
+        Route::get('dashboard', 'dashboard')->name('dashboard');
         Route::get('input', 'input')->name('input');
         Route::post('input', 'store')->name('store');
         Route::get('data', 'show')->name('data');
         Route::get('pengajuan', 'viewPengajuan')->name('pengajuan');
         Route::put('{pengajuan}/status', 'pengajuan')->name('status');
+        Route::get('history', 'viewHistory')->name('history');
     });
      
 });

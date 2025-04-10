@@ -3,7 +3,6 @@
     @foreach ($pengajuan as $item)
     <p>{{ $item->id }}</p>
     <p>{{ $item->deskripsi }}</p>
-    {{-- <p>{{ $item->status }}</p> --}}
     <p>{{ $item->kode_pengajuan }}</p>
     <p>{{ $item->created_at }}</p>
     <p>{{ $item->created_at != $item->updated_at ?  $item->updated_at : null}}</p>
