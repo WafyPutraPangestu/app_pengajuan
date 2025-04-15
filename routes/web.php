@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\SessionControler;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -18,7 +19,8 @@ Route::middleware('admin')->group(function () {
         Route::put('{pengajuan}/status', 'pengajuan')->name('status');
         Route::get('history', 'viewHistory')->name('history');
     });
-     
+
+    Route::get('/admin/detail_barang', [DashboardController::class, 'index'])->name('detail_barang');
 });
 
 Route::middleware('user')->group(function () {
@@ -39,12 +41,9 @@ Route::middleware('guest')->group(function () {
         Route::post('login', 'login');
         Route::get('register', 'showRegistrationForm')->name('register');
         Route::post('register', 'register');
-    
-});
+    });
 });
 
 Route::middleware('auth')->group(function () {
-    Route::post('/auth/logout',[SessionControler::class, 'logout'])->name('auth.logout');
-    
+    Route::post('/auth/logout', [SessionControler::class, 'logout'])->name('auth.logout');
 });
-

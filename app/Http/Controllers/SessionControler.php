@@ -45,8 +45,8 @@ class SessionControler extends Controller
         //     'email' => 'The provided credentials do not match our records.',
         // ])->onlyInput('email');      
     }
-  
-  
+
+
 
     /**
      * Display the specified resource.
@@ -62,7 +62,7 @@ class SessionControler extends Controller
         // dd($request->all());
         $credentials = $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'no_telp' => ['required', 'numeric', 'unique:users'],	
+            'no_telp' => ['required', 'numeric', 'unique:users'],
             'email' => ['required', 'email', 'unique:users'],
             'password' => ['required', 'min:8', 'confirmed'],
         ]);
@@ -85,6 +85,4 @@ class SessionControler extends Controller
 
         return redirect('/auth/login')->with('success', 'Berhasil Logout');
     }
-
- 
 }

@@ -4,18 +4,20 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <!-- Total Pengajuan -->
             <div class="bg-white/10 rounded-lg shadow p-6">
-                <h3 class="text-sm font-medium text-gray-500 mb-2">Total Pengajuan (2 Tahun)</h3>
+                <h3 class="text-sm font-medium text-gray-500 mb-2">Total Pengajuan (Selesai)</h3>
                 <p class="text-3xl font-bold text-blue-600">
-                    {{ $pengajuanPertahun }}
+                    {{ $pengajuanSelesai }}
                 </p>
             </div>
+            {{-- @dd($pengajuanPertahun) --}}
+            {{ $starYears . $endYears }}
     
             <!-- Barang Sering Diperbaiki -->
             <div class="bg-white/10 rounded-lg shadow p-6">
-                <h3 class="text-sm font-medium text-gray-500 mb-2">Barang Sering Diperbaiki</h3>
-                <p class="text-3xl font-bold text-green-600">
+               <h3 class="text-sm font-medium text-gray-500 mb-2">Barang Sering Diperbaiki</h3>
+               <a href="{{ route("detail_barang") }}"><p class="text-3xl font-bold text-green-600">
                     {{ $barangTerbanyak->count() }}
-                </p>
+                </p></a>
             </div>
     
             <!-- User Aktif -->
@@ -26,9 +28,8 @@
                 </p>
             </div>
         </div>
-    
         <!-- Tabel Detail -->
-        <div class="bg-white/10 rounded-lg shadow overflow-hidden">
+        {{-- <div class="bg-white/10 rounded-lg shadow overflow-hidden">
             <table class="w-full">
                 <thead class="bg-gray-50">
                     <tr>
@@ -38,16 +39,6 @@
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-200">
-                   
-    
-                    <!-- Barang -->
-                    {{-- @foreach ($barangTerbanyak as $barang)
-                    <tr>
-                        <td class="px-6 py-4">Barang</td>
-                        <td class="px-6 py-4">{{ $barang->item->name }}</td>
-                    </tr>
-                    @endforeach --}}
-    
                     <!-- User -->
                     @foreach ($userTerbanyak as $user)
                     <tr>
@@ -66,5 +57,6 @@
                 </tbody>
             </table>
         </div>
-    </div>
+    </div> --}}
+       
     </x-layout>
