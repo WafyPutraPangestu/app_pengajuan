@@ -13,13 +13,47 @@ class AdminController extends Controller
 {
     public function dashboard(request $request)
     {
-        $offset = $request->get('periode_offset', 0);
-        $year = Carbon::now()->year + ($offset * 2);
-        $starYears = $year - ($year % 2);
-        $endYears = $year + 1;
-        $startDate = Carbon::createFromFormat('Y-m-d', "$starYears-01-01");
-        $endDate = Carbon::createFromFormat('Y-m-d', "$endYears-12-31");
-        $pengajuanPertahun = pengajuan::whereBetween("created_at", [$startDate, $endDate])->get();
+
+        // Ambil data pengajuan paling awal berdasarkan created_at
+        $earliestPengajuan = Pengajuan::orderBy('created_at', 'asc')->first();
+        if ($earliestPengajuan) {
+            // Ambil tahun dari data paling awal
+            $startYear = Carbon::parse($earliestPengajuan->created_at)->year;
+            // Normalisasi ke tahun genap (misal, jika 2023 maka dikurangi 1 sehingga menjadi 2022)
+            $startYear = $startYear - ($startYear % 2);
+        } else {
+            // Jika tidak ada data, gunakan tahun saat ini sebagai default
+            $startYear = Carbon::now()->year;
+        }
+
+        // Ambil tahun saat ini untuk menentukan batas loop periode
+        $currentYear = Carbon::now()->year;
+        $periodeResults = [];
+
+        // Loop dari tahun paling awal hingga tahun saat ini dalam kelipatan 2 tahun
+        for ($year = $startYear; $year <= $currentYear; $year += 2) {
+            // Tahun awal periode (harus genap)
+            $periodStart = $year;
+            // Tahun akhir periode (dua tahun)
+            $periodEnd = $year + 1;
+
+            // Buat rentang tanggal untuk periode tersebut
+            $startDate = Carbon::create($periodStart, 1, 1)->startOfDay();
+            $endDate = Carbon::create($periodEnd, 12, 31)->endOfDay();
+
+            // Ambil data untuk periode tersebut dengan filter tanggal dan status
+            $dataPeriode = Pengajuan::where('created_at', '>=', $startDate)
+                ->where('created_at', '<=', $endDate)
+                ->where('status', 'selesai')
+                ->with(['item', 'user'])
+                ->get();
+
+            // Simpan hasil periode dan data ke array
+            $periodeResults[] = [
+                'periode' => "$periodStart - $periodEnd",
+                'data' => $dataPeriode,
+            ];
+        }
 
 
 
@@ -46,7 +80,7 @@ class AdminController extends Controller
             ->limit(5)
             ->get();
 
-        return view('admin.dashboard', compact('pengajuanSelesai', 'barangTerbanyak', 'userTerbanyak', 'startDate', 'endDate', 'offset', 'year', 'starYears', 'endYears', 'pengajuanPertahun'));
+        return view('admin.dashboard', compact('pengajuanSelesai', 'barangTerbanyak', 'userTerbanyak', 'earliestPengajuan', 'periodeResults'));
     }
     public function input()
     {
