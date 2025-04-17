@@ -13,47 +13,12 @@ class AdminController extends Controller
 {
     public function dashboard(request $request)
     {
-
-        // Ambil data pengajuan paling awal berdasarkan created_at
-        $earliestPengajuan = Pengajuan::orderBy('created_at', 'asc')->first();
-        if ($earliestPengajuan) {
-            // Ambil tahun dari data paling awal
-            $startYear = Carbon::parse($earliestPengajuan->created_at)->year;
-            // Normalisasi ke tahun genap (misal, jika 2023 maka dikurangi 1 sehingga menjadi 2022)
-            $startYear = $startYear - ($startYear % 2);
-        } else {
-            // Jika tidak ada data, gunakan tahun saat ini sebagai default
-            $startYear = Carbon::now()->year;
-        }
-
-        // Ambil tahun saat ini untuk menentukan batas loop periode
-        $currentYear = Carbon::now()->year;
-        $periodeResults = [];
-
-        // Loop dari tahun paling awal hingga tahun saat ini dalam kelipatan 2 tahun
-        for ($year = $startYear; $year <= $currentYear; $year += 2) {
-            // Tahun awal periode (harus genap)
-            $periodStart = $year;
-            // Tahun akhir periode (dua tahun)
-            $periodEnd = $year + 1;
-
-            // Buat rentang tanggal untuk periode tersebut
-            $startDate = Carbon::create($periodStart, 1, 1)->startOfDay();
-            $endDate = Carbon::create($periodEnd, 12, 31)->endOfDay();
-
-            // Ambil data untuk periode tersebut dengan filter tanggal dan status
-            $dataPeriode = Pengajuan::where('created_at', '>=', $startDate)
-                ->where('created_at', '<=', $endDate)
-                ->where('status', 'selesai')
-                ->with(['item', 'user'])
-                ->get();
-
-            // Simpan hasil periode dan data ke array
-            $periodeResults[] = [
-                'periode' => "$periodStart - $periodEnd",
-                'data' => $dataPeriode,
-            ];
-        }
+        $duaTahun = now()->subYears(2)->format("y");
+        $pengajuanDuaTahun = Pengajuan::where('status', 'selesai')
+            ->where('created_at', '>=', $duaTahun)
+            ->with(['item', 'user'])
+            ->orderBy('created_at', 'desc')
+            ->get();
 
 
 
@@ -80,7 +45,7 @@ class AdminController extends Controller
             ->limit(5)
             ->get();
 
-        return view('admin.dashboard', compact('pengajuanSelesai', 'barangTerbanyak', 'userTerbanyak', 'earliestPengajuan', 'periodeResults'));
+        return view('admin.dashboard', compact('pengajuanSelesai', 'barangTerbanyak', 'userTerbanyak', 'pengajuanDuaTahun', 'duaTahun', 'pengajuanSelesai'));
     }
     public function input()
     {
@@ -115,17 +80,20 @@ class AdminController extends Controller
 
     public function viewPengajuan()
     {
-        $pengajuan = Pengajuan::with(['item'])->where('status', '!=', 'selesai')
-            ->orWhere(function ($query) {
-                $query->where('status', 'selesai')
-                    ->where('updated_at', '>=', now()->subMinute(1));
-            })
+        $pengajuanSelesai = Pengajuan::with(['item'])
+            ->where('status', 'pending')
+
             ->latest()->simplePaginate(3);
-        return view('admin.pengajuan', compact('pengajuan'));
+
+        $pengajuanHistory = Pengajuan::with(['item'])
+            ->where('status', 'selesai')
+            ->latest('updated_at')->simplePaginate(3);
+        return view('admin.pengajuan', compact('pengajuanSelesai', 'pengajuanHistory'));
     }
     public function pengajuan(Request $request, Pengajuan $pengajuan)
     {
         // dd($request->all());
+
 
         $validasi = $request->validate([
             'status' => 'required|in:pending,proses,selesai',

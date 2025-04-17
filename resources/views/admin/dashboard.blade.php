@@ -9,50 +9,13 @@
                     {{ $pengajuanSelesai }}
                 </p>
             </div>
-            {{-- @dd($pengajuanPertahun) --}}
-            {{-- <div class="">
-                <h3 class="text-sm font-medium text-gray-500 mb-2"></h3>
-                <p class="text-3xl font-bold text-blue-600">
-                    {{ $starYears}}
+            {{-- pengajuan per2tahun --}}
+            <div class="bg-white/10 rounded-lg shadow p-6">
+                <h3 class="text-sm font-medium text-gray-500 mb-2">Total Pengajuan (Selesai Dalam 2 Tahun)</h3>
+                <p class="text-3xl font-bold text-pink-600">
+                    {{  $pengajuanDuaTahun->count() }}
                 </p>
-                <p class="text-sm font-medium text-gray-500 mb-2"></p>
-                <p class="text-3xl font-bold text-blue-600">
-                    {{ $endYears }}
-                </p>
-                <p class="text-sm font-medium text-gray-500 mb-2"></p>   
-                <p class="text-3xl font-bold text-blue-600">
-                    {{ $startDate->format('d-m-Y') }}
-                </p>
-                <p class="text-sm font-medium text-gray-500 mb-2"></p>
-                <p class="text-3xl font-bold text-blue-600">
-                    {{ $endDate->format('d-m-Y') }}
-                </p>
-                {{-- @foreach ($pengajuanPertahun as $items )
-                {{$offset + 1 }}
-                    
-                @endforeach --}}
-                @foreach ($periodeResults as $periode)
-                <div class="periode-box">
-                    <h2>Periode: {{ $periode['periode'] }}</h2>
-                    @if($periode['data']->isEmpty())
-                        <p>Tidak ada data untuk periode ini.</p>
-                    @else
-                        <ul>
-                            @foreach ($periode['data'] as $pengajuan)
-                                <li>
-                                    {{-- Ubah 'title' dengan field yang sesuai dari model Pengajuan --}}
-                                    <strong>{{ $pengajuan->title ?? 'Judul pengajuan' }}</strong>
-                                    <br>
-                                    Dibuat pada: {{ $pengajuan->created_at->format('d-m-Y') }}
-                                </li>
-                            @endforeach
-                        </ul>
-                    @endif
-                </div>
-            @endforeach
-                
             </div>
-    
             <!-- Barang Sering Diperbaiki -->
             <div class="bg-white/10 rounded-lg shadow p-6">
                <h3 class="text-sm font-medium text-gray-500 mb-2">Barang Sering Diperbaiki</h3>
